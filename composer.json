@@ -1,0 +1,22 @@
+{
+  "name": "tinylara/framework",
+  "description": "Framework for TinyLara version 2",
+  "license": "MIT",
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "authors": [
+    {
+      "name": "John Lui",
+      "email": "wenhanlv@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {"TinyLara\\": "src/TinyLara/"}
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.0-dev"
+    }
+  }
+}
