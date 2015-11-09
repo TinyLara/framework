@@ -25,7 +25,7 @@ class View {
 
       $viewFilePath = self::getFilePath($viewName);
       if ( is_file($viewFilePath) ) {
-        return new TinyView($viewFilePath);
+        return new View($viewFilePath);
       } else {
         throw new \UnexpectedValueException("View file does not exist!");
       }
@@ -37,7 +37,7 @@ class View {
     if ( !is_array($arr) ) {
       throw new \UnexpectedValueException("View::json can only recieve Array!");
     } else {
-      return new TinyView($arr, true);
+      return new View($arr, true);
     }
   }
 
@@ -50,7 +50,7 @@ class View {
     if ( isset($view) && $view->isJson ) {
       echo json_encode($view->view);
     } else {
-      if ( $view instanceof TinyView ) {
+      if ( $view instanceof View ) {
         if ($view->data) {
           extract($view->data);
         }
