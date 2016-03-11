@@ -110,11 +110,14 @@ class Router {
             $controller = new $segments[0]();
 
             //call method
-            $return = $controller->$segments[1]();
+            $methodName = $segments[1];
+            $return = $controller->$methodName();
 
             if ($after) {
               $after_segments = explode('@', $after);
-              $after_segments[0]::$after_segments[1]($return);
+              $afterClassName = $after_segments[0];
+              $afterFunctionName = $after_segments[1];
+              $afterClassName::$afterFunctionName($return);
             }
 
           } else {
@@ -154,11 +157,14 @@ class Router {
               $controller = new $segments[0]();
 
               //call method and pass any extra parameters to the method
-              $return = $controller->$segments[1](implode(",", $matched));
+              $methodName = $segments[1];
+              $return = $controller->$methodName(implode(",", $matched));
 
               if ($after) {
                 $after_segments = explode('@', $after);
-                $after_segments[0]::$after_segments[1]($return);
+                $afterClassName = $after_segments[0];
+                $afterFunctionName = $after_segments[1];
+                $afterClassName::$afterFunctionName($return);
               }
 
             } else {
