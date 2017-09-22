@@ -46,6 +46,7 @@ class Router {
    */
   public static function __callstatic($method, $params)
   {
+
     if ( $method == 'group' ) {
       if ( isset($params[0]['namespace']) ) {
         self::$namespace[] = $params[0]['namespace'];
@@ -124,7 +125,8 @@ class Router {
     // check if route is defined without regex
     if (in_array($uri, self::$routes)) {
       $route_pos = array_keys(self::$routes, $uri);
-      foreach ($route_pos as $route) {
+      $route =end($route_pos);  //取最后一个匹配的路由
+     // foreach ($route_pos as $route) {
 
         if (self::$methods[$route] == $method) {
           $found_route = true;
@@ -149,6 +151,7 @@ class Router {
               $after_segments = explode('@', $after);
               $afterClassName = $after_segments[0];
               $afterFunctionName = $after_segments[1];
+       
               $afterClassName::$afterFunctionName($return);
             }
 
@@ -157,7 +160,7 @@ class Router {
             call_user_func(self::$callbacks[$route]);
           }
         }
-      }
+     // }
     } else {
       // check if defined with regex
       foreach (self::$routes as $key => $route) {
