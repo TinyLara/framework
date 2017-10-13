@@ -125,7 +125,7 @@ class Router {
     // check if route is defined without regex
     if (in_array($uri, self::$routes)) {
       $route_pos = array_keys(self::$routes, $uri);
-      $route =end($route_pos);  //取最后一个匹配的路由
+      $route =current($route_pos);  //取第一个匹配的路由
      // foreach ($route_pos as $route) {
 
         if (self::$methods[$route] == $method) {
