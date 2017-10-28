@@ -115,7 +115,7 @@ class Router {
    * Example: View@process
    *
    */
-  public static function dispatch($after=null)
+  public static function dispatch()
   {
     $uri = self::detect_uri();
     $method = $_SERVER['REQUEST_METHOD'];
@@ -145,16 +145,7 @@ class Router {
 
             //call method
             $methodName = $segments[1];
-            $return = $controller->$methodName();
-
-            if ($after) {
-              $after_segments = explode('@', $after);
-              $afterClassName = $after_segments[0];
-              $afterFunctionName = $after_segments[1];
-       
-              $afterClassName::$afterFunctionName($return);
-            }
-
+            return $controller->$methodName();
           } else {
             //call closure
             call_user_func(self::$callbacks[$route]);
@@ -190,15 +181,7 @@ class Router {
 
               //call method and pass any extra parameters to the method
               $methodName = $segments[1];
-              $return = $controller->$methodName(implode(",", $matched));
-
-              if ($after) {
-                $after_segments = explode('@', $after);
-                $afterClassName = $after_segments[0];
-                $afterFunctionName = $after_segments[1];
-                $afterClassName::$afterFunctionName($return);
-              }
-
+              return $controller->$methodName(implode(",", $matched));
             } else {
               call_user_func_array(self::$callbacks[$key], $matched);
             }
