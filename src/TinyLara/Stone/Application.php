@@ -6,6 +6,7 @@ use ReflectionClass, ReflectionParameter;
 use Closure, ArrayAccess;
 
 use TinyLara\Contracts\BindingResolutionException;
+use TinyLara\Log\LogServiceProvider;
 
 /**
 * Application
@@ -23,6 +24,39 @@ class Application implements ArrayAccess
   public function __construct($path = null)
   {
     $this->path = $path;
+
+    $this->registerBaseBindings();
+
+    $this->registerBaseServiceProviders();
+
+    // $this->registerCoreContainerAliases();
+  }
+
+  protected function registerBaseBindings()
+  {
+    $this->instances['app'] = $this;
+  }
+
+  protected function registerBaseServiceProviders()
+  {
+    $provider = $this->resolveProvider(new LogServiceProvider($this));
+    if (method_exists($provider, 'register')) {
+        $provider->register();
+    }
+
+    $this->markAsRegistered($provider);
+
+    return $provider;
+  }
+  protected function markAsRegistered($provider)
+  {
+    $this->serviceProviders[] = $provider;
+
+    $this->loadedProviders[get_class($provider)] = true;
+  }
+  public function resolveProvider($provider)
+  {
+    return new $provider($this);
   }
 
   public function singleton($abstract, $concrete = null)
